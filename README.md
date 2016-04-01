@@ -1,4 +1,4 @@
-jenkins_master
+ansible-jenkins-master
 =========
 - [Introduction](#introduction)
 - [Requirements](#requirements)
