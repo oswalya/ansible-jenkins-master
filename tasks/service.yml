@@ -1,0 +1,7 @@
+---
+- name: Ensure service
+  service:
+    name: '{{ item }}'
+    state: '{{ jenkins_master_service_state }}'
+    enabled: '{{ jenkins_master_service_enabled }}'
+  with_items: '{{ jenkins_master_service_names | default([]) }}'

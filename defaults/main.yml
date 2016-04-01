@@ -1,0 +1,27 @@
+---
+jenkins_master_package_state: present
+jenkins_master_service_state: running
+jenkins_master_service_enabled: true
+jenkins_master_home_dir: /var/lib/jenkins
+jenkins_master_cli_jar_location: /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar
+jenkins_master_url: http://localhost:8080
+jenkins_master_plugins:
+  - build-pipeline-plugin
+  - credentials
+  - delivery-pipeline-plugin
+  - environment-script
+  - git
+  - github
+  - ghprb
+  - junit
+  - matrix-auth
+  - matrix-project
+  - modernstatus
+  - parameterized-trigger
+  - rebuild
+  - ssh
+  - ansible
+  - view-job-filters
+  - email-ext
+  - simple-theme-plugin
+  - swarm

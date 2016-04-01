@@ -1,0 +1,24 @@
+---
+- name: stop jenkins_master
+  service:
+    name: '{{ item }}'
+    state: stopped
+  with_items: '{{ jenkins_master_service_names | default([]) }}'
+
+- name: start jenkins_master
+  service:
+    name: '{{ item }}'
+    state: started
+  with_items: '{{ jenkins_master_service_names | default([]) }}'
+
+- name: reload jenkins_master
+  service:
+    name: '{{ item }}'
+    state: reloaded
+  with_items: '{{ jenkins_master_service_names | default([]) }}'
+
+- name: restart jenkins_master
+  service:
+    name: '{{ item }}'
+    state: restarted
+  with_items: '{{ jenkins_master_service_names | default([]) }}'

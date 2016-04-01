@@ -1,0 +1,24 @@
+---
+- include_vars: '{{ item }}'
+  with_first_found:
+  - '{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml'
+  - '{{ ansible_distribution }}.yml'
+  - '{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yml'
+  - '{{ ansible_os_family }}.yml'
+  tags:
+  - jenkins_master_install
+  - jenkins_master_config
+  - jenkins_master_service
+  - jenkins_master_plugins
+
+- include: install.yml
+  tags: jenkins_master_install
+
+- include: config.yml
+  tags: jenkins_master_config
+
+- include: service.yml
+  tags: jenkins_master_service
+
+- include: plugin.yml
+  tags: jenkins_master_plugins

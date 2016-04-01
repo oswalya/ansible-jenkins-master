@@ -1,0 +1,24 @@
+---
+- name: copy plugin dependency resolver script
+  template:
+    src: install_jenkins_plugins.sh.j2
+    dest: /tmp/install_jenkins_plugins.sh
+    mode: 0775
+
+- wait_for:
+    port: 8080
+    delay: 20
+
+- name: install plugins
+  command: >
+    java -jar {{ jenkins_master_cli_jar_location }} -s {{ jenkins_master_url }} install-plugin {{ item }}
+    creates=/var/lib/jenkins/plugins/{{ item }}.jpi
+  with_items: '{{ jenkins_master_plugins }}'
+  become: yes
+  become_user: jenkins
+  notify: restart jenkins_master
+  register: plugins_changed
+
+- name: install missing plugin dependencies
+  shell: /tmp/install_jenkins_plugins.sh
+  when: plugins_changed.changed

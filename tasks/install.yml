@@ -1,0 +1,17 @@
+---
+- name: Ensure repository
+  get_url:
+    url: '{{ jenkins_master_repo_url }}'
+    dest: '{{ jenkins_master_repo_folder }}/jenkins.repo'
+
+- name: Import jenkins GPG key
+  rpm_key:
+    key: '{{ jenkins_master_key_url }}'
+    state: '{{ jenkins_master_package_state }}'
+
+- name: Ensure packages
+  package:
+    name: '{{ item }}'
+    state: '{{ jenkins_master_package_state }}'
+  with_items: '{{ jenkins_master_package_names | default([]) }}'
+  notify: restart jenkins_master
