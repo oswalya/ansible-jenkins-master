@@ -27,6 +27,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "tests/vagrant.yml"
-    ansible.tags = ["jenkins_master_install","jenkins_master_config"]
+    # ansible.tags = ["jenkins_master_plugins"]
    end
 end
