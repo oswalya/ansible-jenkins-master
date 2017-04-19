@@ -11,7 +11,7 @@
   until: >
      'status' in jenkins_service_status and
      jenkins_service_status['status'] == 200
-    
+
 - name: Install plugins without a specific version
   jenkins_plugin:
     name: '{{ item.name }}'
@@ -43,6 +43,16 @@
   when: item.changed
   with_items: '{{ jenkins_unversioned_plugins.results }}'
 
+- name: copy plugin dependency resolver script
+  template:
+    src: install_jenkins_plugins.sh.j2
+    dest: /tmp/install_jenkins_plugins.sh
+    mode: 0775
+
+- name: install missing plugin dependencies
+  shell: /tmp/install_jenkins_plugins.sh
+  when: jenkins_restart_required
+
 - name: Restart Jenkins if required
   service:
     name: jenkins
@@ -63,11 +73,6 @@
      jenkins_service_status['status'] == 200
   when: jenkins_restart_required
 
-- name: Reset the fact
-  set_fact:
-    jenkins_restart_required: no
-  when: jenkins_restart_required
-
 - name: Plugin pinning
   jenkins_plugin:
     name: '{{ item.name }}'
@@ -81,13 +86,3 @@
     state: "{{ 'enabled' if (item.enabled or item.enabled is not defined) else 'disabled'}}"
   when: item.enabled is defined
   with_items: '{{ jenkins_master_plugins }}'
-
-- name: copy plugin dependency resolver script
-  template:
-    src: install_jenkins_plugins.sh.j2
-    dest: /tmp/install_jenkins_plugins.sh
-    mode: 0775
-
-- name: install missing plugin dependencies
-  shell: /tmp/install_jenkins_plugins.sh
-  when: jenkins_restart_required
