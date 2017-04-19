@@ -1,0 +1,19 @@
+---
+language: python
+
+python: "2.7"
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  # Install Ansible.
+  - pip install ansible
+
+script:
+        # playbook syntax
+        - "ansible-playbook -i tests/inventory tests/travis.yml --syntax-check"
+        # execute role
+        - "ansible-playbook -i tests/inventory tests/travis.yml --connection=local --sudo"
+        # check port of jenkins
+        - "curl http://localhost:8080"
