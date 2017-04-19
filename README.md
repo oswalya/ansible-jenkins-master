@@ -14,12 +14,13 @@ This is an ansible role to do a basic installation of jenkins. This includes:
 - install plugins
 
 What this role not (yet) includes:
-- configuration of jenkins (e.g. users, security, executors, system configuration...)
+- most configuration areas of jenkins (e.g. users)
 - customization
 - automated job generation
 
 Supported systems
 - RedHat based systems (RHEL, CentOS)
+- Ubuntu (Not yet fully working -> security is always on)
 
 # Requirements
 - Ansible needs to be installed on your machine

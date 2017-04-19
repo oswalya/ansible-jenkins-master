@@ -1,1 +1,45 @@
 ---
+- name: ensure java options in config
+  lineinfile:
+    dest: '{{ jenkins_master_config_file }}'
+    regexp: '^{{ jenkins_master_java_option_name }}='
+    line: '{{ jenkins_master_java_option_name }}="{{ jenkins_master_java_options }}"'
+  notify: restart jenkins_master
+
+- name: ensure groovy scripts dir
+  file:
+    path: '{{ jenkins_master_groovy_dir }}'
+    state: directory
+    mode: 0755
+
+- name: copy groovy configuration scripts
+  template:
+    src: '{{ item }}'
+    dest: "{{ jenkins_master_groovy_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
+    mode: 0755
+  notify: restart jenkins_master
+  with_fileglob:
+  - ../templates/groovy/*.j2
+
+- name: Ensure user specific files
+  file:
+    src: '{{ item.src | default(omit) }}'
+    dest: '{{ item.dest | default(omit) }}'
+    mode: '{{ item.mode | default(omit) }}'
+    path: '{{ item.path | default(omit) }}'
+    state: '{{ item.state | default(omit) }}'
+    force: '{{ item.force | default(omit) }}'
+    owner: '{{ jenkins_master_systemuser_name }}'
+    group: '{{ jenkins_master_systemgroup_name }}'
+  with_items: '{{ jenkins_master_ensure_files }}'
+  when: jenkins_master_ensure_files.0 is defined
+
+- name: Copy user specific files to host
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: '{{ jenkins_master_systemuser_name }}'
+    group: '{{ jenkins_master_systemgroup_name }}'
+    mode: '{{ item.mode | default(omit) }}'
+  with_items: '{{ jenkins_master_copy_files }}'
+  when: jenkins_master_copy_files.0 is defined

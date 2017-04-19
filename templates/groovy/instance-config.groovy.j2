@@ -1,0 +1,11 @@
+import jenkins.model.*
+
+Thread.start {
+      def instance = Jenkins.getInstance()
+      sleep 1000
+      println "--> Setting Instance specific master configuration"
+      instance.setNumExecutors({{ jenkins_master_numberof_executor }})
+      instance.setLabelString("{{ jenkins_master_labels }}")
+      instance.setMode(Node.Mode.{{ jenkins_master_mode }})
+
+}

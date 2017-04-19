@@ -4,3 +4,5 @@ jenkins_master_service_names: [jenkins]
 jenkins_master_repo_url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
 jenkins_master_key_url: https://jenkins-ci.org/redhat/jenkins-ci.org.key
 jenkins_master_repo_folder: /etc/yum.repos.d
+jenkins_master_config_file: /etc/sysconfig/jenkins
+jenkins_master_java_option_name: JENKINS_JAVA_OPTIONS

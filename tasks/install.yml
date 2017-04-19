@@ -1,13 +1,27 @@
 ---
-- name: Ensure repository
+- name: Ensure repository RedHat
   get_url:
     url: '{{ jenkins_master_repo_url }}'
     dest: '{{ jenkins_master_repo_folder }}/jenkins.repo'
+  when: ansible_os_family == 'RedHat'
 
-- name: Import jenkins GPG key
+- name: Import jenkins GPG key RedHat
   rpm_key:
     key: '{{ jenkins_master_key_url }}'
     state: '{{ jenkins_master_package_state }}'
+  when: ansible_os_family == 'RedHat'
+
+- name: Ensure repository Ubuntu
+  shell: "sh -c 'echo deb {{ jenkins_master_repo_url }} binary/ > {{ jenkins_master_repo_folder }}/jenkins.list'"
+  when: ansible_distribution == 'Ubuntu'
+  args:
+    creates: '{{ jenkins_master_repo_folder }}/jenkins.list'
+
+- name: Import jenkins GPG key Ubuntu
+  apt_key:
+    url: '{{ jenkins_master_key_url }}'
+    state: '{{ jenkins_master_package_state }}'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Ensure packages
   package:

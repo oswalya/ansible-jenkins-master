@@ -1,0 +1,31 @@
+import jenkins.model.*
+import hudson.model.*
+import hudson.security.*
+import hudson.plugins.active_directory.*
+
+Thread.start {
+      def instance = Jenkins.getInstance()
+      sleep 1000
+      println "--> Setting up user management"
+      {% if jenkins_master_ad_enabled %}
+      String domain = '{{ jenkins_master_ad_domain }}'
+      String site = '{{ jenkins_master_ad_site }}'
+      String server = '{{ jenkins_master_ad_server }}'
+      String bindName = '{{ jenkins_master_ad_bind_user }}'
+      String bindPassword = '{{ jenkins_master_ad_bind_password }}'
+      adrealm = new ActiveDirectorySecurityRealm(domain, site, bindName, bindPassword, server)
+      instance.setSecurityRealm(adrealm)
+      {% endif %}
+      def strategy = new hudson.security.GlobalMatrixAuthorizationStrategy()
+      {% if jenkins_master_secure_access_enabled %}
+      strategy.add(Jenkins.ADMINISTER, 'authenticated')
+      strategy.add(Jenkins.READ, 'anonymous')
+      strategy.add(Item.DISCOVER, 'anonymous')
+      strategy.add(Item.READ, 'anonymous')
+      strategy.add(Item.WORKSPACE, 'anonymous')
+      strategy.add(View.READ, 'anonymous')
+      {% else %}
+      strategy.add(Jenkins.ADMINISTER, 'anonymous')
+      {% endif %}
+      instance.setAuthorizationStrategy(strategy)
+}

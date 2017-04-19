@@ -1,27 +1,55 @@
----
+jenkins_master_java_options: '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false'
 jenkins_master_package_state: present
 jenkins_master_service_state: running
 jenkins_master_service_enabled: true
 jenkins_master_home_dir: /var/lib/jenkins
+jenkins_master_groovy_dir: '{{ jenkins_master_home_dir }}/init.groovy.d'
 jenkins_master_cli_jar_location: /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar
-jenkins_master_url: http://localhost:8080
+jenkins_master_port: 8080
+jenkins_master_host: 127.0.0.1
+jenkins_master_url: 'http://{{ jenkins_master_host }}:{{ jenkins_master_port }}'
+jenkins_master_user:
+jenkins_master_password:
+jenkins_master_ad_enabled: false
+jenkins_master_ad_domain:
+jenkins_master_ad_site:
+jenkins_master_ad_server:
+jenkins_master_ad_bind_user:
+jenkins_master_ad_bind_password:
+jenkins_master_secure_access_enabled: false
+jenkins_master_jnlp_port: 0
+jenkins_master_numberof_executor: 0
+jenkins_master_labels: noservice
+jenkins_master_mode: NORMAL
+jenkins_master_systemuser_name: jenkins
+jenkins_master_systemgroup_name: jenkins
+jenkins_master_ensure_files:
+jenkins_master_copy_files:
+jenkins_master_git_repo:
+jenkins_master_git_tmp_folder: '{{ jenkins_master_home_dir }}/_tmp_git_config'
 jenkins_master_plugins:
-  - build-pipeline-plugin
-  - credentials
-  - delivery-pipeline-plugin
-  - environment-script
-  - git
-  - github
-  - ghprb
-  - junit
-  - matrix-auth
-  - matrix-project
-  - modernstatus
-  - parameterized-trigger
-  - rebuild
-  - ssh
-  - ansible
-  - view-job-filters
-  - email-ext
-  - simple-theme-plugin
-  - swarm
+  - name: build-pipeline-plugin
+  - name: credentials
+  - name: delivery-pipeline-plugin
+  - name: environment-script
+  - name: git
+  - name: github
+  - name: ghprb
+  - name: junit
+  - name: matrix-auth
+  - name: matrix-project
+  - name: modernstatus
+  - name: parameterized-trigger
+  - name: rebuild
+  - name: ssh
+  - name: ansible
+  - name: view-job-filters
+  - name: email-ext
+  - name: simple-theme-plugin
+  - name: swarm
+  - name: naginator
+  - name: ws-cleanup
+  - name: active-directory
+    version: 1.49
+    pinned: true
+    enabled: '{{ jenkins_master_ad_enabled }}'

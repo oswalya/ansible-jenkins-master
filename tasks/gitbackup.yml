@@ -1,0 +1,35 @@
+---
+- name: Check if local git workspace exists
+  git:
+    repo: '{{ jenkins_master_git_repo }}'
+    dest: '{{ jenkins_master_home_dir }}'
+    update: no
+    clone: no
+    force: no
+    accept_hostkey: yes
+  register: git_check_workspace
+  become_user: '{{ jenkins_master_systemuser_name }}'
+  when: not (jenkins_master_git_repo is undefined or jenkins_master_git_repo is none or jenkins_master_git_repo | trim == '')
+  ignore_errors: true
+
+- name: Clone git repo to local temp folder
+  git:
+    repo: '{{ jenkins_master_git_repo }}'
+    dest: '{{ jenkins_master_git_tmp_folder }}'
+    update: no
+    clone: yes
+    force: yes
+    accept_hostkey: yes
+  register: git_check_clone
+  become_user: '{{ jenkins_master_systemuser_name }}'
+  when: (jenkins_master_git_repo is defined and git_check_workspace.changed)
+
+- name: Copy git workspace to jenkins workspace
+  command: cp -r {{ jenkins_master_git_tmp_folder }}/. {{ jenkins_master_home_dir }}
+  notify: restart jenkins_master
+  become_user: '{{ jenkins_master_systemuser_name }}'
+  when: (jenkins_master_git_repo is defined and git_check_clone.changed)
+
+- name: Remove temp git workspace
+  command: rm -fr {{ jenkins_master_git_tmp_folder }}
+  when: (jenkins_master_git_repo is defined and git_check_clone.changed)

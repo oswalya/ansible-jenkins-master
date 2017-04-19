@@ -1,0 +1,8 @@
+---
+jenkins_master_package_names: [jenkins]
+jenkins_master_service_names: [jenkins]
+jenkins_master_repo_url: https://pkg.jenkins.io/debian-stable
+jenkins_master_key_url: https://pkg.jenkins.io/debian/jenkins-ci.org.key
+jenkins_master_repo_folder: /etc/apt/sources.list.d
+jenkins_master_config_file: /etc/default/jenkins
+jenkins_master_java_option_name: JAVA_ARGS

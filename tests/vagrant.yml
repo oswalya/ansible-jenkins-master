@@ -1,0 +1,13 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: Yes
+  pre_tasks:
+    - name: install default java environment
+      package:
+        name: java
+        state: present
+      tags: jenkins_master_install
+      when: ansible_os_family == 'RedHat'
+  roles:
+    - ../../ansible-jenkins-master
