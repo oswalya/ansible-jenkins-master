@@ -15,7 +15,7 @@ script:
         # playbook syntax
         - "ansible-playbook -i tests/inventory tests/travis.yml --syntax-check"
         # execute role
-        - "ansible-playbook -i tests/inventory tests/travis.yml --connection=local --sudo --tags "jenkins_master_install,jenkins_master_config"
+        - "ansible-playbook -i tests/inventory tests/travis.yml --connection=local --sudo --tags 'jenkins_master_install,jenkins_master_config'"
 "
         # check port of jenkins
         - "curl http://localhost:8080"
