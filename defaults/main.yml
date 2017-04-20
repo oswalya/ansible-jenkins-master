@@ -23,8 +23,12 @@ jenkins_master_labels: noservice
 jenkins_master_mode: NORMAL
 jenkins_master_systemuser_name: jenkins
 jenkins_master_systemgroup_name: jenkins
-jenkins_master_ensure_files:
 jenkins_master_copy_files:
+  - src:  jobs/BACKUP_JENKINS/config.xml
+    dest: '{{ jenkins_master_home_dir }}/jobs/BACKUP_JENKINS/config.xml'
+    mode: '0775'
+jenkins_master_ensure_files:
+jenkins_master_git_install_backup_job: false
 jenkins_master_git_repo:
 jenkins_master_git_tmp_folder: '{{ jenkins_master_home_dir }}/_tmp_git_config'
 jenkins_master_plugins:

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>This is a Backup Job that pushes the changes on this Jenkins Master to git</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <assignedNode>service</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H/30 * * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command># Jenkins Configurations Directory
+cd $JENKINS_HOME
+git status
+
+# Add general configurations, job configurations, and user content and plugins
+git add -- *.xml jobs/*/*.xml plugins/*.jpi #plugins/*.hpi
+
+# mark as deleted anything that&amp;apos;s been, well, deleted
+to_remove=`git status | grep &quot;deleted&quot; | awk &apos;{print $2}&apos;`
+
+if [ -n &quot;$to_remove&quot; ]; then
+    git add -u
+fi
+
+if [[ -z `git diff --cached` ]]; then
+  echo &quot;No changes found - exiting&quot;
+  exit 0
+fi
+
+git commit -m &quot;Auto commit from Jenkins Master&quot;
+
+git push origin master </command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

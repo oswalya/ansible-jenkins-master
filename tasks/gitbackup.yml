@@ -1,4 +1,20 @@
 ---
+- name: Ensure backup job folder
+  file:
+    path: '{{ jenkins_master_home_dir }}/jobs/CI_BACKUP'
+    state: directory
+    mode: '0775'
+    owner: '{{ jenkins_master_systemuser_name }}'
+    group: '{{ jenkins_master_systemgroup_name }}'
+  when: jenkins_master_git_install_backup_job
+
+- name: Ensure backup job config
+  copy:
+    src:  jobs/BACKUP_JENKINS/config.xml
+    dest: '{{ jenkins_master_home_dir }}/jobs/BACKUP_JENKINS/config.xml'
+    mode: '0775'
+  when: jenkins_master_git_install_backup_job
+
 - name: Check if local git workspace exists
   git:
     repo: '{{ jenkins_master_git_repo }}'

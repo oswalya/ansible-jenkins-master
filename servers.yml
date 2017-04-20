@@ -1,8 +1,8 @@
 ---
-- name: master-ubuntu
-  box: bento/ubuntu-16.04
-  ram: 1024
-  ip: 192.168.10.101
+# - name: master-ubuntu
+#   box: bento/ubuntu-16.04
+#   ram: 1024
+#   ip: 192.168.10.101
 - name: master-centos
   box: centos/7
   ram: 1024
