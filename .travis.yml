@@ -16,5 +16,6 @@ script:
         - "ansible-playbook -i tests/inventory tests/travis.yml --syntax-check"
         # execute role
         - "ansible-playbook -i tests/inventory tests/travis.yml --connection=local --sudo --tags 'jenkins_master_install,jenkins_master_config'"
-        # check port of jenkins
+        # check port of jenkins after a short wait period
+        - "sleep 15"
         - "curl http://localhost:8080"
