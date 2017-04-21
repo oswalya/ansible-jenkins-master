@@ -3,10 +3,13 @@
   remote_user: vagrant
   become: Yes
   pre_tasks:
-    - name: install default java environment
+    - name: install  missing default packages for test (java / git)
       package:
-        name: java
+        name: '{{ item }}'
         state: present
+      with_items:
+        - java
+        - git
       tags: jenkins_master_install
       when: ansible_os_family == 'RedHat'
   roles:
