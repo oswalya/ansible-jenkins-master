@@ -21,4 +21,19 @@
   service:
     name: '{{ item }}'
     state: restarted
+  listen: "restart jenkins_master and wait"
   with_items: '{{ jenkins_master_service_names | default([]) }}'
+
+- name: Wait for Jenkins to start up
+  uri:
+    url: '{{ jenkins_master_url }}'
+    status_code: 200
+    timeout: 5
+  register: jenkins_service_status
+  listen: "restart jenkins_master and wait"
+  # Keep trying for 5 mins in 5 sec intervals
+  retries: 60
+  delay: 5
+  until: >
+     'status' in jenkins_service_status and
+     jenkins_service_status['status'] == 200

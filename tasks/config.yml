@@ -4,7 +4,7 @@
     dest: '{{ jenkins_master_config_file }}'
     regexp: '^{{ jenkins_master_java_option_name }}='
     line: '{{ jenkins_master_java_option_name }}="{{ jenkins_master_java_options }}"'
-  notify: restart jenkins_master
+  notify: "restart jenkins_master and wait"
 
 - name: ensure groovy scripts dir
   file:
@@ -17,7 +17,7 @@
     src: '{{ item }}'
     dest: "{{ jenkins_master_groovy_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
     mode: 0755
-  notify: restart jenkins_master
+  notify: "restart jenkins_master and wait"
   with_fileglob:
   - ../templates/groovy/*.j2
 

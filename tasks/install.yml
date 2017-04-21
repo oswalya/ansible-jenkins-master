@@ -28,4 +28,4 @@
     name: '{{ item }}'
     state: '{{ jenkins_master_package_state }}'
   with_items: '{{ jenkins_master_package_names | default([]) }}'
-  notify: restart jenkins_master
+  notify: "restart jenkins_master and wait"
