@@ -1,7 +1,7 @@
 ---
 - name: Ensure backup job folder
   file:
-    path: '{{ jenkins_master_home_dir }}/jobs/CI_BACKUP'
+    path: '{{ jenkins_master_home_dir }}/jobs/BACKUP_JENKINS'
     state: directory
     mode: '0775'
     owner: '{{ jenkins_master_systemuser_name }}'
