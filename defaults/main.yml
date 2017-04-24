@@ -21,18 +21,6 @@ jenkins_master_matrix_auth_enabled: true
 jenkins_master_matrix_auth_strategies:
   - name: Jenkins.ADMINISTER
     value: anonymous
-  # - name: Jenkins.ADMINISTER
-  #   value: authenticated
-  # - name: Jenkins.READ
-  #   value: anonymous
-  # - name: Item.DISCOVER
-  #   value: anonymous
-  # - name: Item.READ
-  #   value: anonymous
-  # - name: Item.WORKSPACE
-  #   value: anonymous
-  # - name: View.READ
-  #   value: anonymous
 jenkins_master_jnlp_port: 0
 jenkins_master_numberof_executor: 0
 jenkins_master_labels: noservice
@@ -67,6 +55,4 @@ jenkins_master_plugins:
   - name: naginator
   - name: ws-cleanup
   - name: active-directory
-    # version: 1.49
-    # pinned: true
     enabled: '{{ jenkins_master_ad_enabled }}'
