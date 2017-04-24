@@ -46,11 +46,11 @@
 - name: copy plugin dependency resolver script
   template:
     src: install_jenkins_plugins.sh.j2
-    dest: /tmp/install_jenkins_plugins.sh
+    dest: '{{ jenkins_master_tmp_dir }}/install_jenkins_plugins.sh'
     mode: 0775
 
 - name: install missing plugin dependencies
-  shell: /tmp/install_jenkins_plugins.sh
+  shell: '{{ jenkins_master_tmp_dir }}/install_jenkins_plugins.sh'
   when: jenkins_restart_required
 
 - name: Restart Jenkins if required

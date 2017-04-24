@@ -1,8 +1,9 @@
-jenkins_master_java_options: '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false'
 jenkins_master_package_state: present
 jenkins_master_service_state: running
 jenkins_master_service_enabled: true
 jenkins_master_home_dir: /var/lib/jenkins
+jenkins_master_tmp_dir: /tmp
+jenkins_master_java_options: '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Djava.io.tmpdir={{ jenkins_master_tmp_dir }}'
 jenkins_master_groovy_dir: '{{ jenkins_master_home_dir }}/init.groovy.d'
 jenkins_master_cli_jar_location: /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar
 jenkins_master_port: 8080
